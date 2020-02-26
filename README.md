@@ -63,8 +63,19 @@ export AZURE_TENANT_ID=<some id>
 export AZURE_CLIENT_ID=<some id>
 export AZURE_CLIENT_SECRET=<some secret>
 export AZURE_SUBSCRIPTION_ID=<some id>
-export AZURE_REST_API_PROFILE=<some profile version>
 ```
+
+Optionally you can set the following two envirnment variables.
+
+```bash
+export AZURE_REST_API_PROFILE=<some profile version>
+export AZURE_REST_API_VERSION=<some api version>
+```
+
+`AZURE_REST_API_PROFILE` will set the profile version globally for all `azurerm_*` resource calls.
+`AZURE_REST_API_VERSION` will set the api version globally for all `azurerm_*` resource calls. NOTE: this should only be used for debug purposes because all api version are not supported for all resources.
+
+Explicit calls to `azurerm_config.managment.set_api_version` and `azurerm_config.managment.set_api_profile` will take precedence over the environment variables. Set the version or profile back to `nil` in order to use the environment variables again.
 
 ### Use the Resources
 

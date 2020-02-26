@@ -27,17 +27,21 @@ module Azure
       set_reader(:backend, backend, override)
     end
 
-    def with_api_profile(profile)
+    def set_api_profile(profile)
       @api_profile = profile
     end
 
-    def with_api_version(version)
+    def set_api_version(version)
       @api_version = version
     end
 
+    def get_api_profile
+      @api_profile || ENV["AZURE_REST_API_PROFILE"]
+    end
+
     def get_api_version(provider, resource, default)
-      @api_profile = ENV["AZURE_REST_API_PROFILE"] || nil
-      @api_version = ENV["AZURE_REST_API_VERSION"] || nil
+      @api_profile = ENV["AZURE_REST_API_PROFILE"] if @api_profile.nil?
+      @api_version = ENV["AZURE_REST_API_VERSION"] if @api_version.nil?
       Azure::APIProfile.get_api_version(provider, resource, profile: @api_profile, default: @api_version || default)
     end
 
