@@ -20,6 +20,8 @@ module Azure
     def get(path, params: {}, headers: {})
       add_user_agent!(headers)
       connection.get do |req|
+        puts host
+        puts path
         req.url path
 
         req.params  = req.params.merge(params)
@@ -31,6 +33,8 @@ module Azure
     def post(path, params: {}, headers: {}, body: nil)
       add_user_agent!(headers)
       connection.post do |req|
+        puts host
+        puts path
         req.url path
         req.body    = body if body
         req.params  = req.params.merge(params)
