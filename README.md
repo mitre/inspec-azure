@@ -15,6 +15,15 @@ This InSpec resource pack uses the Azure REST API and provides the required reso
 * Azure Service Principal Account
 * Azure Service Principal may read the Azure Active Directory
 
+### Rest API Profile
+
+The Azure REST API Profile represents a map of resource provider namespaces and their API versions. It represents the set of supported APIs for each of the Azure Clouds. To determine the correct API version for your cloud, use the following resources.
+
+Azure Rest API Profiles: https://github.com/Azure/azure-rest-api-specs/profile
+Azure Rest: https://docs.microsoft.com/en-us/rest/api/azure/
+
+If you do not know what API profile is appropriate for your cloud and you are using the default Azure Commercial Cloud, then the latest profile is most likely sufficient.
+
 ### Service Principal
 
 Your Azure Service Principal Account must have `contributor` role to any subscription that you'd like to use this resource pack against. You should have the following pieces of information:
@@ -42,8 +51,20 @@ To create your account Service Principal Account:
 14. Select the `contributor` role.
 15. Select the application you just created and save.
 
-These must be stored in a environment variables prefaced with `AZURE_`.  If you use Dotenv then you may save these values in your own `.envrc` file. 
+### Setting Up the Environment
+
+The above information must be stored in a environment variables prefaced with `AZURE_`.  If you use Dotenv then you may save these values in your own `.envrc` file. 
 Either source it or run `direnv allow`. If you don't use Dotenv then you may just create environment variables in the way that your prefer.
+
+The environemt file should look something like the following...
+
+```bash
+export AZURE_TENANT_ID=<some id>
+export AZURE_CLIENT_ID=<some id>
+export AZURE_CLIENT_SECRET=<some secret>
+export AZURE_SUBSCRIPTION_ID=<some id>
+export AZURE_REST_API_PROFILE=<some profile version>
+```
 
 ### Use the Resources
 

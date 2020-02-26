@@ -11,7 +11,7 @@ module Azure
     def initialize
       @required_attrs = %i(backend)
       @page_link_name = 'nextLink'
-      @active_profile_name = ENV['AZURE_CLOUD_API_PROFILE'] || 'latest'
+      @active_profile_name = ENV['AZURE_REST_API_PROFILE'] || 'latest'
       @active_profile = get_api_profile_by_name(@active_profile_name)
     end
 
