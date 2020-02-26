@@ -27,6 +27,20 @@ module Azure
       set_reader(:backend, backend, override)
     end
 
+    def with_api_profile(profile)
+      @api_profile = profile
+    end
+
+    def with_api_version(version)
+      @api_version = version
+    end
+
+    def get_api_version(provider, resource, default)
+      @api_profile = ENV["AZURE_REST_API_PROFILE"] || nil
+      @api_version = ENV["AZURE_REST_API_VERSION"] || nil
+      Azure::APIProfile.get_api_version(provider, resource, profile: @api_profile, default: @api_version || default)
+    end
+
     # Converts data (a hash) into a struct. This is a recursive
     # call that will wall the entire hash and convert all key/value pairs.
     #
