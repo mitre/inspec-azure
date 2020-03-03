@@ -44,7 +44,7 @@ module Azure
         if default.nil?
           throw Azure::APIVersionError.new(profile, provider, resource_type)
         else
-          default
+          return default
         end
       end
 
@@ -53,7 +53,7 @@ module Azure
         if default.nil?
           throw Azure::APIVersionError.new(profile, provider, resource_type)
         else
-          default
+          return default
         end
       end
 
