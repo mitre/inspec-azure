@@ -37,11 +37,69 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
   end
 
   def security_rules
-    @security_rules ||= @properties['securityRules']
+    @security_rules ||= (@properties['securityRules']).sort_by { |rule| rule[:properties][:priority]}
+  end
+
+  def security_rules_inbound
+    security_rules&.select { |rule| rule[:properties][:direction] == "Inbound" }
+  end
+
+  def security_rules_outbound
+    security_rules&.select { |rule| rule[:properties][:direction] == "Outbound" }
   end
 
   def default_security_rules
     @default_security_rules ||= @properties['defaultSecurityRules']
+  end
+
+  def match_security_config?(config, direction: nil)
+    if config.nil?
+      return false
+    end
+
+    if direction == "Outbound"
+      rules = security_rules_outbound
+    elsif direction == "Inbound"
+      rules = security_rules_inbound
+    else
+      rules = security_rules
+    end
+
+    for rule in rules
+      # continue to use up configs until you find a matching config
+      loop do
+        c = config.shift()
+        # no more configs so fail
+        if c.nil?
+          return false
+        end
+        
+        break if rule_matches_config?(rule, c)
+      end
+    end
+
+    true
+  end
+  RSpec::Matchers.alias_matcher :match_security_config, :be_match_security_config
+
+  def rule_matches_config?(rule, c)
+    props_hash = rule.properties.to_h
+
+    sourcePorts = ([props_hash[:sourcePortRange]] + props_hash[:sourcePortRanges]).compact
+    destinationPorts = ([props_hash[:destinationPortRange]] + props_hash[:destinationPortRanges]).compact
+    sourceAddress = ([props_hash[:sourceAddressPrefix]] + props_hash[:sourceAddressPrefixes]).compact
+    destinationAddress = ([props_hash[:destinationAddressPrefix]] + props_hash[:destinationAddressPrefixes]).compact
+    direction = props_hash[:direction]
+    protocol = props_hash[:protocol]
+    access = props_hash[:access]
+
+    c[:sourcePorts] == sourcePorts && \
+    c[:destinationPorts] == destinationPorts && \
+    c[:sourceAddress] == sourceAddress && \
+    c[:destinationAddress] == destinationAddress && \
+    c[:direction] == direction && \
+    c[:protocol] == protocol && \
+    c[:access] == access
   end
 
   SSH_CRITERIA = %i(ssh_port access_allow direction_inbound tcp source_open).freeze

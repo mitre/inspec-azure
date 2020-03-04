@@ -15,6 +15,9 @@ class AzurermVirtualMachines < AzurermPluralResource
              .register_column(:os_disks,   field: 'os_disk')
              .register_column(:data_disks, field: 'data_disks')
              .register_column(:vm_names,   field: 'name')
+             .register_column(:platforms,   field: 'platform')
+             .register_column(:network_interfaces,   field: 'network_interfaces')
+             .register_column(:tags,   field: 'tags')
              .install_filter_methods_on_resource(self, :table)
 
   attr_reader :table
@@ -26,6 +29,8 @@ class AzurermVirtualMachines < AzurermPluralResource
     @table = resp.collect(&with_platform)
                  .collect(&with_os_disk)
                  .collect(&with_data_disks)
+                 .collect(&with_network_interfaces)
+                 .collect(&with_tags)
   end
 
   include Azure::Deprecations::StringsInWhereClause
@@ -67,6 +72,25 @@ class AzurermVirtualMachines < AzurermPluralResource
       disks = disks.select { |disk| disk.key?(:managedDisk) }
 
       Azure::Response.create(vm.members << :data_disks, vm.values << disks.collect(&:name))
+    end
+  end
+
+  def with_network_interfaces
+    lambda do |vm|
+      nics = Array(vm.properties.networkProfile.networkInterfaces)
+      names = nics.map { |nic| nic.id.split("/").last }.compact
+
+      Azure::Response.create(vm.members << :network_interfaces, vm.values << names)
+    end
+  end
+
+  def with_tags
+    lambda do |vm|
+      if !vm.respond_to?(:tags)
+        return Azure::Response.create(vm.members << :tags, vm.values << nil)
+      end
+
+      Azure::Response.create(vm.members, vm.values)
     end
   end
 end

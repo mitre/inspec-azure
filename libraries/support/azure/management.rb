@@ -182,6 +182,22 @@ module Azure
       )
     end
 
+    def network_security_group_rule(resource_group, nsg, rule)
+      get(
+        url: link(location: 'Microsoft.Network/networkSecurityGroups',
+                  resource_group: resource_group) + nsg + '/securityRules/' + rule,
+        api_version: get_api_version('microsoft.network', 'networkSecurityGroups', '2018-02-01'),
+      )
+    end
+
+    def network_security_group_rules(resource_group, nsg)
+      get(
+        url: link(location: 'Microsoft.Network/networkSecurityGroups',
+                  resource_group: resource_group) + nsg + '/securityRules',
+        api_version: get_api_version('microsoft.network', 'networkSecurityGroups', '2018-02-01'),
+      )
+    end
+
     def network_security_groups(resource_group)
       get(
         url: link(location: 'Microsoft.Network/networkSecurityGroups',
