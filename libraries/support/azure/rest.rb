@@ -22,6 +22,7 @@ module Azure
       connection.get do |req|
         puts host
         puts path
+        puts params.to_s
         req.url path
 
         req.params  = req.params.merge(params)

@@ -20,7 +20,7 @@ class AzurermKeyVaults < AzurermPluralResource
              .register_column(:names,      field: :name)
              .register_column(:locations,  field: :location)
              .register_column(:types,      field: :type)
-             .register_column(:tags,       field: :tag)
+             .register_column(:tags,       field: :tags)
              .register_column(:properties, field: :properties)
              .install_filter_methods_on_resource(self, :table)
 
