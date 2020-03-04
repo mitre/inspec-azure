@@ -140,6 +140,14 @@ output "windows_vm_data_disks" {
     var.windows_internal_data_disk]
 }
 
+output "windows_vm_nic_name" {
+  value = azurerm_network_interface.nic3.name
+}
+
+output "linux_vm_nic_name" {
+  value = azurerm_network_interface.nic1.name
+}
+
 output "monitoring_agent_name" {
   value = var.monitoring_agent_name
 }
@@ -180,6 +188,20 @@ output "storage_account_blob_container" {
   value = azurerm_storage_container.blob.name
 }
 
+
+output "mysql_server_name" {
+  value = azurerm_mysql_server.mysql_server.name
+}
+
+output "mysql_database_name" {
+  value = azurerm_mysql_database.mysql_database.name
+}
+
+output "lb_name" {
+  value = module.azurerm_lb.azurerm_lb_name
+}
+
+
 output "cluster_fqdn" {
   value = azurerm_kubernetes_cluster.cluster.fqdn
 }
@@ -213,16 +235,9 @@ output "contributor_role_name" {
 }
 
 output "log_profile_name" {
-  value = data.azurerm_monitor_log_profile.log_profile.name
+  value = azurerm_monitor_log_profile.log_profile.name
 }
 
-output "mysql_server_name" {
-  value = azurerm_mysql_server.mysql.name
-}
-
-output "mysql_database_name" {
-  value = azurerm_mysql_database.mysql.name
-}
 
 output "postgresql_server_name" {
   value = azurerm_postgresql_server.postgresql.name
@@ -230,4 +245,40 @@ output "postgresql_server_name" {
 
 output "postgresql_database_name" {
   value = azurerm_postgresql_database.postgresql.name
+}
+
+output "event_hub_endpoint" {
+  value = azurerm_eventhub.event_hub.name
+}
+
+output "event_hub_name" {
+  value = azurerm_eventhub.event_hub.name
+}
+
+output "event_hub_authorization_rule" {
+  value = azurerm_eventhub_authorization_rule.auth_rule_inspectesteh.name
+}
+
+output "cosmosdb_database_account" {
+  value = azurerm_cosmosdb_account.inspectest_cosmosdb.name
+}
+
+output "event_hub_namespace_name" {
+  value = azurerm_eventhub_namespace.event_hub_namespace.name
+}
+
+output "iothub_resource_name" {
+  value = azurerm_iothub.iothub.name
+}
+
+output "iothub_event_hub_endpoint" {
+  value = azurerm_iothub_consumer_group.inspecehtest_consumergroup.eventhub_endpoint_name
+}
+
+output "consumer_group" {
+  value = azurerm_iothub_consumer_group.inspecehtest_consumergroup.name
+}
+
+output "consumer_groups" {
+  value = ["$Default", azurerm_iothub_consumer_group.inspecehtest_consumergroup.name]
 }

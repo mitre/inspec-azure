@@ -561,6 +561,38 @@ module Azure
       )
     end
 
+    def load_balancer(resource_group, loadbalancer_name)
+      get(
+        url: link(location: "Microsoft.Network/loadBalancers/#{loadbalancer_name}",
+                  resource_group: resource_group),
+        api_version: '2018-11-01',
+      )
+    end
+
+    def load_balancers(resource_group)
+      get(
+        url: link(location: 'Microsoft.Network/loadBalancers/',
+                  resource_group: resource_group),
+        api_version: '2018-11-01',
+      )
+    end
+
+    def network_interface(resource_group, name)
+      get(
+        url: link(location: "Microsoft.Network/networkInterfaces/#{name}",
+                  resource_group: resource_group),
+        api_version: '2018-11-01',
+      )
+    end
+
+    def network_interfaces(resource_group)
+      get(
+        url: link(location: 'Microsoft.Network/networkInterfaces/',
+                  resource_group: resource_group),
+        api_version: '2018-11-01',
+      )
+    end
+
     def webapp_supported_stacks
       get(
         url: link(location: 'Microsoft.Web/availableStacks'),
@@ -613,6 +645,62 @@ module Azure
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups",
                 resource_group: resource_group),
         api_version: get_api_version('Microsoft.Devices', 'IotHubs','2018-04-01'),
+      )
+    end
+
+    def cosmosdb_database_account(resource_group, database_account_name)
+      get(
+        url: link(location: "Microsoft.DocumentDB/databaseAccounts/#{database_account_name}",
+                  resource_group: resource_group),
+        api_version: '2015-04-08',
+      )
+    end
+
+    def event_hub_namespace(resource_group, namespace_name)
+      get(
+        url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}",
+                resource_group: resource_group),
+        api_version: '2017-04-01',
+      )
+    end
+
+    def event_hub_event_hub(resource_group, namespace_name, event_hub_name)
+      get(
+        url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}/eventhubs/#{event_hub_name}",
+                resource_group: resource_group),
+        api_version: '2017-04-01',
+      )
+    end
+
+    def event_hub_authorization_rule(resource_group, namespace_name, event_hub_name, authorization_rule_name)
+      get(
+        url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}/eventhubs/#{event_hub_name}/authorizationRules/#{authorization_rule_name}",
+                resource_group: resource_group),
+        api_version: '2017-04-01',
+      )
+    end
+
+    def iothub(resource_group, resource_name)
+      get(
+        url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}",
+                resource_group: resource_group),
+        api_version: '2018-04-01',
+      )
+    end
+
+    def iothub_event_hub_consumer_group(resource_group, resource_name, event_hub_endpoint, consumer_group)
+      get(
+        url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups/#{consumer_group}",
+                resource_group: resource_group),
+        api_version: '2018-04-01',
+      )
+    end
+
+    def iothub_event_hub_consumer_groups(resource_group, resource_name, event_hub_endpoint)
+      get(
+        url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups",
+                resource_group: resource_group),
+        api_version: '2018-04-01',
       )
     end
 

@@ -1,10 +1,25 @@
 # Changelog
-<!-- latest_release 1.10.0 -->
+<!-- latest_release 1.12.0 -->
+## [v1.12.0](https://github.com/inspec/inspec-azure/tree/v1.12.0) (2020-01-30)
+
+#### Merged Pull Requests
+- Add lib for load balancer and network interface [#161](https://github.com/inspec/inspec-azure/pull/161) ([mikaelkrief](https://github.com/mikaelkrief))
+<!-- latest_release -->
+
+## [v1.11.0](https://github.com/inspec/inspec-azure/tree/v1.11.0) (2020-01-29)
+
+#### Merged Pull Requests
+- cosmodb follow up [#230](https://github.com/inspec/inspec-azure/pull/230) ([rmoles](https://github.com/rmoles))
+
+## [v1.10.1](https://github.com/inspec/inspec-azure/tree/v1.10.1) (2020-01-29)
+
+#### Merged Pull Requests
+- Feature/cosmos db [#175](https://github.com/inspec/inspec-azure/pull/175) ([MRushtonScratch](https://github.com/MRushtonScratch))
+
 ## [v1.10.0](https://github.com/inspec/inspec-azure/tree/v1.10.0) (2019-12-17)
 
 #### Merged Pull Requests
 - Offload user filtering to Azure API to avoid resource issues in large AD [#227](https://github.com/inspec/inspec-azure/pull/227) ([trickyearlobe](https://github.com/trickyearlobe))
-<!-- latest_release -->
 
 ## [v1.9.6](https://github.com/inspec/inspec-azure/tree/v1.9.6) (2019-11-29)
 
