@@ -41,6 +41,12 @@ class AzurermVirtualNetwork < AzurermSingularResource
     properties.dhcpOptions.dnsServers
   end
 
+  NIC_REGEX = /Microsoft\.Network\/networkInterfaces\/(.*?)\//
+  def attached_network_interfaces
+    nics = @subs.collect { |subnet| subnet.properties.ipConfigurations }.select { |nic| !nic.nil? }
+    nics.flatten(1).map { |nic| nic.id.match(NIC_REGEX)&.captures&.first }.compact
+  end
+
   def vnet_peerings
     name_id = ->(peer) { [peer.name, peer.properties.remoteVirtualNetwork.id] }
     any_nils = ->(pair) { pair.any?(&:nil?) }
