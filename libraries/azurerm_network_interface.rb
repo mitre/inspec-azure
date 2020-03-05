@@ -33,6 +33,14 @@ class AzurermNetworkInterface < AzurermSingularResource
     @exists = true
   end
 
+  def vm_name
+    properties.virtualMachine.id.split('/').last
+  end
+
+  def nsg
+    properties.networkSecurityGroup.id.split('/').last
+  end
+
   def has_private_address_ip?
     !!properties.ipConfigurations[0].properties.privateIPAddress
   end
