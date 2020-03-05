@@ -66,6 +66,11 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
     end
 
     for rule in rules
+      # rule doesnt apply
+      if rule.properties.direction != direction
+        next
+      end
+
       # continue to use up configs until you find a matching config
       loop do
         c = config.shift()
@@ -80,7 +85,16 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
 
     true
   end
-  RSpec::Matchers.alias_matcher :match_security_config, :be_match_security_config
+
+  def match_security_config_inbound?(config)
+    match_security_config?(config, direction: "Inbound")
+  end
+  RSpec::Matchers.alias_matcher :match_security_config_inbound, :be_match_security_config_inbound
+
+  def match_security_config_outbound?(config)
+    match_security_config?(config, direction: "Outbound")
+  end
+  RSpec::Matchers.alias_matcher :match_security_config_outbound, :be_match_security_config_outbound
 
   def rule_matches_config?(rule, c)
     props_hash = rule.properties.to_h
