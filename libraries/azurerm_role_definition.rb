@@ -31,6 +31,16 @@ class AzurermRoleDefinition < AzurermSingularResource
   end
 
   def to_s
-    "Role Definition: '#{name}'"
+    "Role Definition: #{role_name} '#{name}'"
+  end
+
+  def has_assignable_scope?(matcher)
+    if matcher.is_a?(Regexp)
+      return @assignable_scopes.select { |scope| scope.match?(matcher) }.length > 0
+    elsif matcher.is_a?(String)
+      return @assignable_scopes.select { |scope| scope == matcher }.length > 0
+    end
+
+    throw "Cannot use a matcher of type #{matcher.class} to determine if the role definition has an assignable scope. The matcher must be regex or a string."
   end
 end
