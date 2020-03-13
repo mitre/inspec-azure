@@ -17,16 +17,37 @@ class AzurermLocks < AzurermPluralResource
              .register_column(:ids,        field: :id)
              .register_column(:names,      field: :name)
              .register_column(:properties, field: :properties)
+             .register_column(:levels) { |table| table.properties.map { |ps|  ps.level } }
              .install_filter_methods_on_resource(self, :table)
 
-  def initialize(resource_group: nil, resource_name: nil, resource_type: nil)
+  RESOURCE_GROUP_REGEX = /resourceGroups\/(.*?)\//
+  PROVIDERS_REGEX = /providers\/(.*?\/.*?)\//
+  RESOURCE_REGEX = /providers\/.*?\/.*?\/(.*?)$/ 
+  def initialize(resource_group: nil, resource_name: nil, resource_type: nil, id: nil)
+    if !id.nil?
+      resource_group = RESOURCE_GROUP_REGEX.match(id)&.captures&.first
+      resource_type = PROVIDERS_REGEX.match(id)&.captures&.first
+      resource_name = RESOURCE_REGEX.match(id)&.captures&.first  
+    end
+
     resp = management.locks(resource_group, resource_name, resource_type)
+    @resource_group = resource_group
+    @resource_name = resource_name
+    @resource_type = resource_type
+
     return if has_error?(resp)
 
     @table = resp
   end
 
+  def has_lock_level?(level)
+    levels.include?(level)
+  end
+
   def to_s
-    'Azure Locks'
+    path = "/"
+    path += "resourceGroups/#{@resource_group}" if !@resource_group.nil?
+    path += "/providers/#{@resource_type}/#{@resource_name}" if !@resource_group.nil? && !@resource_name.nil? && !@resource_type.nil?
+    "#{properties.length} Azure Locks: `#{path}`"
   end
 end
