@@ -92,9 +92,26 @@ module Azure
     end
 
     def locks(resource_group, resource_name, resource_type)
+      # must specify all 3 if listing by resource
+      if !resource_group.nil? && !resource_type.nil? && !resource_name.nil?
+        location = "#{resource_type}/#{resource_name}" 
+        other_provider = 'providers/Microsoft.Authorization/locks'
+      else
+        location = 'Microsoft.Authorization/locks'
+        other_provider = ""
+      end
+
+      get(
+        url: link(location: location,
+                  resource_group: resource_group) + other_provider,
+        api_version: get_api_version('Microsoft.Authorization', 'locks', '2016-09-01'),
+      )
+    end
+
+    def lock(resource_group, resource_type, resource_name, lock_name)
       get(
         url: link(location: "#{resource_type}/#{resource_name}",
-                  resource_group: resource_group) + 'providers/Microsoft.Authorization/locks',
+                  resource_group: resource_group) + "providers/Microsoft.Authorization/locks/#{lock_name}",
         api_version: get_api_version('Microsoft.Authorization', 'locks', '2016-09-01'),
       )
     end
