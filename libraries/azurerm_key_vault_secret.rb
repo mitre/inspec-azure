@@ -42,6 +42,14 @@ class AzurermKeyVaultSecret < AzurermSingularResource
     "Azure Key Vault Secret: '#{id}'"
   end
 
+  def enabled?
+    attributes.enabled
+  end
+
+  def has_expiration_set?
+    !attributes.exp.nil?
+  end
+
   private
 
   VALID_VERSION_REGEX = Regexp.new('^([0-9a-f]{32})$')

@@ -32,6 +32,15 @@ class AzurermKeyVault < AzurermSingularResource
     @exists = true
   end
 
+  def has_soft_delete_enabled?
+    properties.enableSoftDelete.nil? ? false : properties.enableSoftDelete
+  end
+  
+  def has_purge_protection_enabled?
+    properties.enablePurgeProtection.nil? ? false : properties.enablePurgeProtection
+
+  end
+
   def diagnostic_settings
     @diagnostic_settings ||= management.key_vault_diagnostic_settings(id)
   end
