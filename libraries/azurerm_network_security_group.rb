@@ -24,6 +24,8 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
   attr_reader(*ATTRS)
 
   def initialize(resource_group: nil, name: nil)
+    return if name.nil? || resource_group.nil?
+    
     resp = management.network_security_group(resource_group, name)
     return if has_error?(resp)
 
@@ -66,20 +68,26 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
     end
 
     for rule in rules
+      found = false
       # rule doesnt apply
       if rule.properties.direction != direction
         next
       end
 
       # continue to use up configs until you find a matching config
-      loop do
-        c = config.shift()
-        # no more configs so fail
-        if c.nil?
-          return false
+      for c in config
+        if rule_matches_config?(rule, c)
+          found = true
+          break
         end
-        
-        break if rule_matches_config?(rule, c)
+      end
+
+      if !found
+        # no more configs so fail
+        puts('---RULE---')
+        puts(rule.to_s)
+        puts('----END----')
+        return false
       end
     end
 
@@ -96,13 +104,17 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
   end
   RSpec::Matchers.alias_matcher :match_security_config_outbound, :be_match_security_config_outbound
 
+  def more_compact(l)
+    l.select { |item| !item.nil? && item != "" }
+  end
+
   def rule_matches_config?(rule, c)
     props_hash = rule.properties.to_h
 
-    sourcePorts = ([props_hash[:sourcePortRange]] + props_hash[:sourcePortRanges]).compact
-    destinationPorts = ([props_hash[:destinationPortRange]] + props_hash[:destinationPortRanges]).compact
-    sourceAddress = ([props_hash[:sourceAddressPrefix]] + props_hash[:sourceAddressPrefixes]).compact
-    destinationAddress = ([props_hash[:destinationAddressPrefix]] + props_hash[:destinationAddressPrefixes]).compact
+    sourcePorts = more_compact([props_hash[:sourcePortRange]] + props_hash[:sourcePortRanges])
+    destinationPorts = more_compact([props_hash[:destinationPortRange]] + props_hash[:destinationPortRanges])
+    sourceAddress = more_compact([props_hash[:sourceAddressPrefix]] + props_hash[:sourceAddressPrefixes])
+    destinationAddress = more_compact([props_hash[:destinationAddressPrefix]] + props_hash[:destinationAddressPrefixes])
     direction = props_hash[:direction]
     protocol = props_hash[:protocol]
     access = props_hash[:access]
@@ -111,9 +123,9 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
     c[:destinationPorts] == destinationPorts && \
     c[:sourceAddress] == sourceAddress && \
     c[:destinationAddress] == destinationAddress && \
-    c[:direction] == direction && \
-    c[:protocol] == protocol && \
-    c[:access] == access
+    c[:direction].downcase == direction.downcase && \
+    c[:protocol].downcase == protocol.downcase && \
+    c[:access].downcase == access.downcase
   end
 
   SSH_CRITERIA = %i(ssh_port access_allow direction_inbound tcp source_open).freeze

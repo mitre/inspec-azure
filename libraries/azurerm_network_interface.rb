@@ -41,6 +41,10 @@ class AzurermNetworkInterface < AzurermSingularResource
     properties.networkSecurityGroup.id.split('/').last
   end
 
+  def subnet
+    properties.ipConfigurations.id.split('/').last
+  end
+
   def has_private_address_ip?
     !!properties.ipConfigurations[0].properties.privateIPAddress
   end

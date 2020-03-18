@@ -38,6 +38,12 @@ class AzurermSubnet < AzurermSingularResource
     @nsg ||= id_to_h(properties.networkSecurityGroup.id)[:network_security_groups]
   end
 
+  NIC_REGEX = /Microsoft\.Network\/networkInterfaces\/(.*?)\//
+  def attached_network_interfaces
+    properties.ipConfigurations.map { |ipconfig| ipconfig.id.match(NIC_REGEX)&.captures&.first }.compact
+  end
+
+
   def to_s
     "'#{name}' subnet"
   end
