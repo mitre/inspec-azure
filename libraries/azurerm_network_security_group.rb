@@ -84,9 +84,6 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
 
       if !found
         # no more configs so fail
-        puts('---RULE---')
-        puts(rule.to_s)
-        puts('----END----')
         return false
       end
     end
