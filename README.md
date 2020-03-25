@@ -53,6 +53,8 @@ To create your account Service Principal Account:
 
 ### Setting Up the Environment
 
+##### Authenticating to Azure
+
 The above information must be stored in a environment variables prefaced with `AZURE_`.  If you use Dotenv then you may save these values in your own `.envrc` file. 
 Either source it or run `direnv allow`. If you don't use Dotenv then you may just create environment variables in the way that your prefer.
 
@@ -65,17 +67,43 @@ export AZURE_CLIENT_SECRET=<some secret>
 export AZURE_SUBSCRIPTION_ID=<some id>
 ```
 
-Optionally you can set the following two envirnment variables.
+##### Setting an Api Profile
+
+Optionally you can set the api profile that the resource pack uses to fetch api version information for specific Azure Resources.
+As of now, the supported profile versions are `V2018_03_01`, `V2019_03_01_Hybrid`, `Latest`, and `V2017_03_09`.
+If this variable is unset, inspec train defaults to the `Latest` profile.
+
+The environemt file should look something like the following...
 
 ```bash
-export AZURE_REST_API_PROFILE=<some profile version>
-export AZURE_REST_API_VERSION=<some api version>
+export AZURE_API_PROFILE=<PROFILE_VERSION>
 ```
 
-`AZURE_REST_API_PROFILE` will set the profile version globally for all `azurerm_*` resource calls.
-`AZURE_REST_API_VERSION` will set the api version globally for all `azurerm_*` resource calls. NOTE: this should only be used for debug purposes because all api version are not supported for all resources.
+##### Using Custom Cloud Endpoints
 
-Explicit calls to `azurerm_config.managment.set_api_version` and `azurerm_config.managment.set_api_profile` will take precedence over the environment variables. Set the version or profile back to `nil` in order to use the environment variables again.
+If you are using an Azure cloud other than the Commercial cloud, you will need to configure Inspec to use the create Azure endpoints. To do this you will need the following information.
+
+The environemt file should look something like the following...
+
+```bash
+export AZURE_CLOUD_NAME="AzureCommercialCloud"
+export AZURE_CLOUD_PORTAL_URL="https://portal.azure.com"
+export AZURE_CLOUD_PUBLISHING_PROFILE_URL="http://go.microsoft.com/fwlink/?LinkId=254432"
+export AZURE_CLOUD_MANAGEMENT_ENDPOINT_URL="https://management.core.windows.net"
+export AZURE_CLOUD_RESOURCE_MANAGEMENT_URL="https://management.azure.com"
+export AZURE_CLOUD_SQL_MANAGEMENT_ENDPOINT_URL="https://management.core.windows.net:8443/"
+export AZURE_CLOUD_SQL_SERVER_HOSTNAME_SUFFIX=".database.windows.net"
+export AZURE_CLOUD_GALLERY_ENDPOINT_URL="https://gallery.azure.com/"
+export AZURE_CLOUD_AD_ENDPOINT_URL="https://login.microsoftonline.com/"
+export AZURE_CLOUD_AD_RESOURCE_ID="https://management.core.windows.net/"
+export AZURE_CLOUD_AD_VAULT_RESOURCE_ID="https://vault.azure.net"
+export AZURE_CLOUD_AD_GRAPH_RESOURCE_ID="https://graph.windows.net/"
+export AZURE_CLOUD_GRAPH_API_VERSION="2013-04-05"
+export AZURE_CLOUD_STORAGE_ENDPOINT_SUFFIX="core.windows.net"
+export AZURE_CLOUD_KEY_VAULT_DNS_SUFFIX=".vault.azure.net"
+export AZURE_CLOUD_DATALAKE_STORE_FS_ENDPOINT_SUFFIX="azuredatalakestore.net"
+export AZURE_CLOUD_DATALAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX="azuredatalakeanalytics.net"
+```
 
 ### Use the Resources
 
