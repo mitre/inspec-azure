@@ -12,7 +12,7 @@ module Azure
 
       @required_attrs = []
       @page_link_name = 'nextLink'
-      @rest_client    = Azure::Rest.new(backend.azure_client(::Azure::KeyVault::Profiles::Latest::Mgmt::Client, vault_name: vault_name))
+      @rest_client    = Azure::Rest.new(backend.azure_client(::Azure::KeyVault, vault_name: vault_name))
     end
 
     def keys

@@ -43,7 +43,7 @@ module Azure
       end
 
       backend.enable_cache(:api_call)
-      @rest_client ||= Azure::Rest.new(backend.azure_client(::Azure::GraphRbac::Profiles::Latest::Client))
+      @rest_client ||= Azure::Rest.new(backend.azure_client(::Azure::GraphRbac))
     end
 
     def handle_error

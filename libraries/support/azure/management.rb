@@ -16,21 +16,21 @@ module Azure
       get(
         url: link(location: 'Microsoft.Insights/activityLogAlerts',
                   resource_group: resource_group) + id,
-        api_version: get_api_version('Microsoft.Insights', 'activityLogAlerts', '2017-04-01'),
+        api_version: backend.get_api_version('Microsoft.Insights/activityLogAlerts', {}),
       )
     end
 
     def activity_log_alerts
       get(
         url: link(location: 'Microsoft.Insights/activityLogAlerts'),
-        api_version: get_api_version('Microsoft.Insights', 'activityLogAlerts', '2017-04-01'),
+        api_version: backend.get_api_version('Microsoft.Insights/activityLogAlerts', {}),
       )
     end
 
     def activity_log_alert_filtered(filter)
       get(
         url: link(location: "Microsoft.Insights/eventTypes/management/values/?$filter=#{filter}"),
-        api_version: get_api_version('Microsoft.Insights', 'activityLogAlerts', '2017-03-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Insights/eventTypes', {}),
       )
     end
 
@@ -38,7 +38,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.ContainerService/managedClusters',
                   resource_group: resource_group) + id,
-        api_version: '2018-03-31',
+        api_version: backend.get_api_version('Microsoft.ContainerService/managedClusters', {}),
       )
     end
 
@@ -46,7 +46,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.ContainerService/managedClusters',
                   resource_group: resource_group),
-        api_version: '2018-03-31',
+        api_version: backend.get_api_version('Microsoft.ContainerService/managedClusters', {}),
       )
     end
 
@@ -55,7 +55,7 @@ module Azure
         url: link(location: "Microsoft.Storage/storageAccounts/#{storage_account_name}/"\
                           "blobServices/default/containers/#{blob_container_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Storage', 'storageAccounts/blobServices', '2018-07-01'),
+        api_version: backend.get_api_version('Microsoft.Storage/storageAccounts/blobServices', {}),
       )
     end
 
@@ -64,7 +64,7 @@ module Azure
         url: link(location: "Microsoft.Storage/storageAccounts/#{storage_account_name}/"\
                           'blobServices/default/containers/',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Storage', 'storageAccounts/blobServices', '2018-07-01'),
+        api_version: backend.get_api_version('Microsoft.Storage/storageAccounts/blobServices', {}),
       )
     end
 
@@ -72,7 +72,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.KeyVault/vaults',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.KeyVault', 'vaults', '2016-10-01'),
+        api_version: backend.get_api_version('Microsoft.KeyVault/vaults', {}),
       )
     end
 
@@ -80,14 +80,14 @@ module Azure
       get(
         url: link(location: "Microsoft.KeyVault/vaults/#{key_vault_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.KeyVault', 'vaults', '2016-10-01'),
+        api_version: backend.get_api_version('Microsoft.KeyVault/vaults', {}),
       )
     end
 
     def key_vault_diagnostic_settings(key_vault_id)
       get(
         url: "#{key_vault_id}/providers/microsoft.insights/diagnosticSettings",
-        api_version: get_api_version('Microsoft.Insights', 'diagnosticSettings', '2017-05-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Insights/diagnosticSettings', {}),
       )
     end
 
@@ -104,7 +104,7 @@ module Azure
       get(
         url: link(location: location,
                   resource_group: resource_group) + other_provider,
-        api_version: get_api_version('Microsoft.Authorization', 'locks', '2016-09-01'),
+        api_version: backend.get_api_version('Microsoft.Authorization/locks', {}),
       )
     end
 
@@ -112,28 +112,28 @@ module Azure
       get(
         url: link(location: "#{resource_type}/#{resource_name}",
                   resource_group: resource_group) + "providers/Microsoft.Authorization/locks/#{lock_name}",
-        api_version: get_api_version('Microsoft.Authorization', 'locks', '2016-09-01'),
+        api_version: backend.get_api_version('Microsoft.Authorization/locks', {}),
       )
     end
 
     def log_profile(id)
       get(
         url: link(location: 'Microsoft.Insights/logProfiles') + id,
-        api_version: get_api_version('Microsoft.Insights', 'logProfiles', '2016-03-01'),
+        api_version: backend.get_api_version('Microsoft.Insights/logProfiles', {}),
       )
     end
 
     def log_profiles
       get(
         url: link(location: 'Microsoft.Insights/logProfiles'),
-        api_version: get_api_version('Microsoft.Insights', 'logProfiles', '2016-03-01'),
+        api_version: backend.get_api_version('Microsoft.Insights/logProfiles', {}),
       )
     end
 
     def management_groups
       get(
         url: '/providers/Microsoft.Management/managementGroups',
-        api_version: '2018-03-01-preview',
+        api_version: backend.get_api_version('Microsoft.Management/managementGroups', {}),
       )
     end
 
@@ -146,7 +146,7 @@ module Azure
 
       get(
         url: "/providers/Microsoft.Management/managementGroups/#{group_id}",
-        api_version: '2018-03-01-preview',
+        api_version: backend.get_api_version('Microsoft.Management/managementGroups', {}),
         params: params,
       )
     end
@@ -155,7 +155,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforMySQL/servers/#{name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.DBforMySQL', 'servers', '2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
     end
 
@@ -163,7 +163,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforMySQL/servers/#{server_name}/firewallRules",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.DBforMySQL', 'servers', '2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
     end
 
@@ -171,7 +171,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.DBforMySQL/servers/',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.DBforMySQL', 'servers', '2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
     end
 
@@ -179,7 +179,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforMySQL/servers/#{server_name}/databases/#{database_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.DBforMySQL', 'servers', '2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
     end
 
@@ -187,7 +187,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforMySQL/servers/#{server_name}/databases",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.DBforMySQL', 'servers', '2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
     end
 
@@ -195,7 +195,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkSecurityGroups',
                   resource_group: resource_group) + id,
-        api_version: get_api_version('microsoft.network', 'networkSecurityGroups', '2018-02-01'),
+        api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
     end
 
@@ -203,7 +203,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkSecurityGroups',
                   resource_group: resource_group) + nsg + '/securityRules/' + rule,
-        api_version: get_api_version('microsoft.network', 'networkSecurityGroups', '2018-02-01'),
+        api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
     end
 
@@ -211,7 +211,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkSecurityGroups',
                   resource_group: resource_group) + nsg + '/securityRules',
-        api_version: get_api_version('microsoft.network', 'networkSecurityGroups', '2018-02-01'),
+        api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
     end
 
@@ -219,7 +219,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkSecurityGroups',
                   resource_group: resource_group),
-        api_version: get_api_version('microsoft.network', 'networkSecurityGroups', '2018-02-01'),
+        api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
     end
 
@@ -227,7 +227,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkWatchers',
                   resource_group: resource_group) + id,
-        api_version: get_api_version('Microsoft.Network','networkWatchers', '2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Network/networkWatchers', {}),
       )
     end
 
@@ -235,7 +235,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkWatchers',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network','networkWatchers', '2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Network/networkWatchers', {}),
       )
     end
 
@@ -243,7 +243,7 @@ module Azure
       post(
         url: link(location: "Microsoft.Network/networkWatchers/#{network_watcher}/queryFlowLogStatus",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network','networkWatchers', '2019-04-01'),
+        api_version: backend.get_api_version('Microsoft.Network/networkWatchers', {}),
         req_body: "{\"targetResourceId\": \"/subscriptions/#{subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{nsg}\"}",
       )
     end
@@ -252,7 +252,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforPostgreSQL/servers/#{name}",
                   resource_group: resource_group),
-        api_version: get_api_version('microsoft.DBforPostgreSQL','servers', '2017-12-01'),
+        api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
     end
 
@@ -260,7 +260,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforPostgreSQL/servers/#{name}/configurations",
                   resource_group: resource_group),
-        api_version: get_api_version('microsoft.DBforPostgreSQL','servers', '2017-12-01'),
+        api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
     end
 
@@ -268,7 +268,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.DBforPostgreSQL/servers/',
                   resource_group: resource_group),
-        api_version: get_api_version('microsoft.DBforPostgreSQL','servers', '2017-12-01'),
+        api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
     end
 
@@ -276,7 +276,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforPostgreSQL/servers/#{server_name}/databases/#{database_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('microsoft.DBforPostgreSQL','servers', '2017-12-01'),
+        api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
     end
 
@@ -284,56 +284,57 @@ module Azure
       get(
         url: link(location: "Microsoft.DBforPostgreSQL/servers/#{server_name}/databases",
                   resource_group: resource_group),
-        api_version: get_api_version('microsoft.DBforPostgreSQL','servers', '2017-12-01'),
+        api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
     end
 
     def resource_groups
       get(
         url: link(location: 'resourcegroups', provider: false),
-        api_version: get_api_version('microsoft.resources','resourceGroups', '2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Resources/resourceGroups', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def role_definition(name)
       get(
         url: link(location: "Microsoft.Authorization/roleDefinitions/#{name}", provider: true),
-        api_version: get_api_version('microsoft.authorization', 'roleDefinitions','2015-07-01'),
+        api_version: backend.get_api_version('microsoft.authorization/roleDefinitions',{}),
       )
     end
 
     def role_definitions
       get(
         url: link(location: 'Microsoft.Authorization/roleDefinitions', provider: true),
-        api_version: get_api_version('microsoft.authorization', 'roleDefinitions','2015-07-01'),
+        api_version: backend.get_api_version('microsoft.authorization/roleDefinitions', {}),
       )
     end
 
     def scp_auto_provisioning_settings
       get(
         url: link(location: 'Microsoft.Security/autoProvisioningSettings'),
-        api_version: '2017-08-01-preview',
+        api_version: backend.get_api_version('Microsoft.Security/autoProvisioningSettings', {}),
       )
     end
 
     def scp_default_policy
       get(
         url: link(location: 'Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn'),
-        api_version: get_api_version('Microsoft.Authorization', 'policyAssignments','2018-05-01'),
+        api_version: backend.get_api_version('Microsoft.Authorization/policyAssignments',{}),
       )
     end
 
     def security_center_policy(id)
       get(
         url: link(location: 'Microsoft.Security/policies') + id,
-        api_version: '2015-06-01-Preview',
+        api_version: backend.get_api_version('Microsoft.Security/policies',{}),
       )
     end
 
     def security_center_policies
       get(
         url: link(location: 'Microsoft.Security/policies'),
-        api_version: '2015-06-01-Preview',
+        api_version: backend.get_api_version('Microsoft.Security/policies',{}),
       )
     end
 
@@ -341,7 +342,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Sql/servers',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers','2018-06-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers',{}),
       )
     end
 
@@ -349,7 +350,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers','2018-06-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers',{}),
       )
     end
 
@@ -357,7 +358,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/auditingSettings/default",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/extendedAuditingSettings','2017-03-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/extendedAuditingSettings',{}),
       )
     end
 
@@ -365,7 +366,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/securityAlertPolicies/Default",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/securityAlertPolicies','2017-03-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/securityAlertPolicies',{}),
       )
     end
 
@@ -373,7 +374,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/administrators",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'managedInstances/administrators','2014-04-01'),
+        api_version: backend.get_api_version('Microsoft.Sql/managedInstances/administrators',{}),
       )
     end
 
@@ -381,7 +382,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/encryptionProtector",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/encryptionProtector','2015-05-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/encryptionProtector',{}),
       )
     end
 
@@ -389,7 +390,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/firewallRules",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers','2014-04-01'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers',{}),
       )
     end
 
@@ -397,7 +398,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/databases/#{database_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/databases','2017-10-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/databases',{}),
       )
     end
 
@@ -405,7 +406,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Sql/servers/#{server_name}/databases",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/databases','2017-10-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/databases',{}),
       )
     end
 
@@ -414,7 +415,7 @@ module Azure
         url: link(location: "Microsoft.Sql/servers/#{server_name}/databases/#{database_name}" \
                           '/auditingSettings/default',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/extendedAuditingSettings', '2017-03-01-preview'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/extendedAuditingSettings', {}),
       )
     end
 
@@ -423,7 +424,7 @@ module Azure
         url: link(location: "Microsoft.Sql/servers/#{server_name}/databases/#{database_name}" \
                           '/securityAlertPolicies/default',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/databases/securityAlertPolicies','2014-04-01'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/databases/securityAlertPolicies',{}),
       )
     end
 
@@ -432,7 +433,7 @@ module Azure
         url: link(location: "Microsoft.Sql/servers/#{server_name}/databases/#{database_name}" \
                           '/transparentDataEncryption/current',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Sql', 'servers/databases/transparentDataEncryption','2014-04-01'),
+        api_version: backend.get_api_version('Microsoft.Sql/servers/databases/transparentDataEncryption',{}),
       )
     end
 
@@ -440,7 +441,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Storage/storageAccounts/#{name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Storage', 'storageAccounts','2017-06-01'),
+        api_version: backend.get_api_version('Microsoft.Storage/storageAccounts',{}),
       )
     end
 
@@ -448,7 +449,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Storage/storageAccounts',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Storage', 'storageAccounts','2017-06-01'),
+        api_version: backend.get_api_version('Microsoft.Storage/storageAccounts',{}),
       )
     end
 
@@ -456,7 +457,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Network/virtualNetworks/#{vnet}/subnets",
                   resource_group: resource_group) + name,
-        api_version: get_api_version('Microsoft.Network', 'virtualNetworks','2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
     end
 
@@ -464,21 +465,21 @@ module Azure
       get(
         url: link(location: "Microsoft.Network/virtualNetworks/#{vnet}/subnets",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network', 'virtualNetworks','2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
     end
 
     def subscription
       get(
         url: "/subscriptions/#{subscription_id}",
-        api_version: get_api_version('microsoft.resources', 'subscriptions', '2019-10-01'),
+        api_version: backend.get_api_version('microsoft.resources/subscriptions', {}),
       )
     end
     
     def subscription_locations
       get(
         url: link(location: 'locations', provider: false),
-        api_version: get_api_version('Microsoft.Resources', 'subscriptions/locations','2019-10-01'),
+        api_version: backend.get_api_version('Microsoft.Resources/subscriptions/locations',{}),
       )
     end
 
@@ -486,7 +487,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Compute/virtualMachines',
                   resource_group: resource_group) + id,
-        api_version: get_api_version('Microsoft.Compute','virtualMachines','2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.Compute/virtualMachines',{}),
       )
     end
 
@@ -494,7 +495,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Compute/virtualMachines',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Compute','virtualMachines','2017-12-01'),
+        api_version: backend.get_api_version('Microsoft.Compute/virtualMachines',{}),
       )
     end
 
@@ -502,7 +503,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/virtualNetworks',
                   resource_group: resource_group) + id,
-        api_version: get_api_version('Microsoft.Network', 'virtualNetworks','2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
     end
 
@@ -510,7 +511,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/virtualNetworks',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network', 'virtualNetworks','2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
     end
 
@@ -518,14 +519,14 @@ module Azure
       get(
         url: link(location: 'Microsoft.Compute/disks',
                   resource_group: resource_group) + id,
-        api_version: get_api_version('Microsoft.Compute', 'disks','2017-03-30'),
+        api_version: backend.get_api_version('Microsoft.Compute/disks',{}),
       )
     end
 
     def virtual_machine_disks
       get(
         url: link(location: 'Microsoft.Compute/disks'),
-        api_version: get_api_version('Microsoft.Compute', 'disks', '2019-03-01'),
+        api_version: backend.get_api_version('Microsoft.Compute/disks', {}),
       )
     end
 
@@ -533,7 +534,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Web/sites/#{webapp_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Web', 'sites','2016-08-01'),
+        api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
     end
 
@@ -541,7 +542,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Web/sites',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Web', 'sites','2016-08-01'),
+        api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
     end
 
@@ -550,7 +551,7 @@ module Azure
         url: link(location: "Microsoft.Web/sites/#{webapp_name}" \
                           '/config/authsettings/list',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Web', 'sites','2016-08-01'),
+        api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
     end
 
@@ -558,7 +559,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Web/sites/#{webapp_name}/config/web",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Web', 'sites','2016-08-01'),
+        api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
     end
 
@@ -566,7 +567,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Network/loadBalancers/#{loadbalancer_name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network', 'loadBalancers', '2018-11-01'),
+        api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
     end
 
@@ -574,7 +575,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/loadBalancers/',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network', 'loadBalancers', '2018-11-01'),
+        api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
     end
 
@@ -582,7 +583,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Network/networkInterfaces/#{name}",
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network', 'networkInterfaces', '2018-11-01'),
+        api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
     end
 
@@ -590,7 +591,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkInterfaces/',
                   resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Network', 'networkInterfaces', '2018-11-01'),
+        api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
     end
 
@@ -598,7 +599,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Network/loadBalancers/#{loadbalancer_name}",
                   resource_group: resource_group),
-        api_version: '2018-11-01',
+        api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
     end
 
@@ -606,7 +607,7 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/loadBalancers/',
                   resource_group: resource_group),
-        api_version: '2018-11-01',
+        api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
     end
 
@@ -614,7 +615,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Network/networkInterfaces/#{name}",
                   resource_group: resource_group),
-        api_version: '2018-11-01',
+        api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
     end
 
@@ -622,14 +623,14 @@ module Azure
       get(
         url: link(location: 'Microsoft.Network/networkInterfaces/',
                   resource_group: resource_group),
-        api_version: '2018-11-01',
+        api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
     end
 
     def webapp_supported_stacks
       get(
         url: link(location: 'Microsoft.Web/availableStacks'),
-        api_version: get_api_version('Microsoft.Web', 'availableStacks', '2018-02-01'),
+        api_version: backend.get_api_version('Microsoft.Web/availableStacks', {}),
       )
     end
 
@@ -637,7 +638,7 @@ module Azure
       get(
         url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}",
                 resource_group: resource_group),
-        api_version: get_api_version('Microsoft.EventHub', 'namespaces', '2017-04-01'),
+        api_version: backend.get_api_version('Microsoft.EventHub/namespaces', {}),
       )
     end
 
@@ -645,7 +646,7 @@ module Azure
       get(
         url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}/eventhubs/#{event_hub_name}",
                 resource_group: resource_group),
-        api_version: get_api_version('Microsoft.EventHub', 'namespaces', '2017-04-01'),
+        api_version: backend.get_api_version('Microsoft.EventHub/namespaces', {}),
       )
     end
 
@@ -653,7 +654,7 @@ module Azure
       get(
         url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}/eventhubs/#{event_hub_name}/authorizationRules/#{authorization_rule_name}",
                 resource_group: resource_group),
-        api_version: get_api_version('Microsoft.EventHub', 'namespaces', '2017-04-01'),
+        api_version: backend.get_api_version('Microsoft.EventHub/namespaces', {}),
       )
     end
 
@@ -661,7 +662,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}",
                 resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Devices', 'IotHubs','2018-04-01'),
+        api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
     end
 
@@ -669,7 +670,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups/#{consumer_group}",
                 resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Devices', 'IotHubs','2018-04-01'),
+        api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
     end
 
@@ -677,7 +678,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups",
                 resource_group: resource_group),
-        api_version: get_api_version('Microsoft.Devices', 'IotHubs','2018-04-01'),
+        api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
     end
 
@@ -685,7 +686,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DocumentDB/databaseAccounts/#{database_account_name}",
                   resource_group: resource_group),
-        api_version: '2015-04-08',
+        api_version: backend.get_api_version('Microsoft.DocumentDB/databaseAccounts',{}),
       )
     end
 
@@ -693,7 +694,7 @@ module Azure
       get(
         url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}",
                 resource_group: resource_group),
-        api_version: '2017-04-01',
+        api_version: backend.get_api_version('Microsoft.EventHub/namespaces',{}),
       )
     end
 
@@ -701,7 +702,7 @@ module Azure
       get(
         url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}/eventhubs/#{event_hub_name}",
                 resource_group: resource_group),
-        api_version: '2017-04-01',
+        api_version: backend.get_api_version('Microsoft.EventHub/namespaces',{}),
       )
     end
 
@@ -709,7 +710,7 @@ module Azure
       get(
         url: link(location: "Microsoft.EventHub/namespaces/#{namespace_name}/eventhubs/#{event_hub_name}/authorizationRules/#{authorization_rule_name}",
                 resource_group: resource_group),
-        api_version: '2017-04-01',
+        api_version: backend.get_api_version('Microsoft.EventHub/namespaces',{}),
       )
     end
 
@@ -717,7 +718,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}",
                 resource_group: resource_group),
-        api_version: '2018-04-01',
+        api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
     end
 
@@ -725,7 +726,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups/#{consumer_group}",
                 resource_group: resource_group),
-        api_version: '2018-04-01',
+        api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
     end
 
@@ -733,7 +734,7 @@ module Azure
       get(
         url: link(location: "Microsoft.Devices/IotHubs/#{resource_name}/eventHubEndpoints/#{event_hub_endpoint}/ConsumerGroups",
                 resource_group: resource_group),
-        api_version: '2018-04-01',
+        api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
     end
 
@@ -741,7 +742,7 @@ module Azure
       get(
         url: link(location: "Microsoft.DocumentDB/databaseAccounts/#{database_account_name}",
                   resource_group: resource_group),
-        api_version: '2015-04-08',
+        api_version: backend.get_api_version('Microsoft.DocumentDB/databaseAccounts',{}),
       )
     end
 

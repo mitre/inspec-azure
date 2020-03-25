@@ -26,23 +26,13 @@ module Azure
     def with_backend(backend, override: false)
       set_reader(:backend, backend, override)
     end
+    
+    def allow_namespace_error(e)
+      if e.is_a? ::Train::Transports::ApiNameSpaceError
+        raise Inspec::Exceptions::ResourceSkipped, e.to_s
+      end
 
-    def set_api_profile(profile)
-      @api_profile = profile
-    end
-
-    def set_api_version(version)
-      @api_version = version
-    end
-
-    def get_api_profile
-      @api_profile || ENV["AZURE_REST_API_PROFILE"]
-    end
-
-    def get_api_version(provider, resource, default)
-      @api_profile = ENV["AZURE_REST_API_PROFILE"] if @api_profile.nil?
-      @api_version = ENV["AZURE_REST_API_VERSION"] if @api_version.nil?
-      Azure::APIProfile.get_api_version(provider, resource, profile: @api_profile, default: @api_version || default)
+      raise e
     end
 
     # Converts data (a hash) into a struct. This is a recursive
