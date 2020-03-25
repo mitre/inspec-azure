@@ -18,6 +18,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('Microsoft.Insights/activityLogAlerts', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def activity_log_alerts
@@ -25,6 +26,7 @@ module Azure
         url: link(location: 'Microsoft.Insights/activityLogAlerts'),
         api_version: backend.get_api_version('Microsoft.Insights/activityLogAlerts', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def activity_log_alert_filtered(filter)
@@ -32,6 +34,7 @@ module Azure
         url: link(location: "Microsoft.Insights/eventTypes/management/values/?$filter=#{filter}"),
         api_version: backend.get_api_version('Microsoft.Insights/eventTypes', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def aks_cluster(resource_group, id)
@@ -40,6 +43,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('Microsoft.ContainerService/managedClusters', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def aks_clusters(resource_group)
@@ -48,6 +52,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.ContainerService/managedClusters', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def blob_container(resource_group, storage_account_name, blob_container_name)
@@ -57,6 +62,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Storage/storageAccounts/blobServices', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def blob_containers(resource_group, storage_account_name)
@@ -66,6 +72,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Storage/storageAccounts/blobServices', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def key_vaults(resource_group)
@@ -74,6 +81,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.KeyVault/vaults', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def key_vault(resource_group, key_vault_name)
@@ -82,6 +90,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.KeyVault/vaults', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def key_vault_diagnostic_settings(key_vault_id)
@@ -89,6 +98,7 @@ module Azure
         url: "#{key_vault_id}/providers/microsoft.insights/diagnosticSettings",
         api_version: backend.get_api_version('Microsoft.Insights/diagnosticSettings', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def locks(resource_group, resource_name, resource_type)
@@ -106,6 +116,7 @@ module Azure
                   resource_group: resource_group) + other_provider,
         api_version: backend.get_api_version('Microsoft.Authorization/locks', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def lock(resource_group, resource_type, resource_name, lock_name)
@@ -114,6 +125,7 @@ module Azure
                   resource_group: resource_group) + "providers/Microsoft.Authorization/locks/#{lock_name}",
         api_version: backend.get_api_version('Microsoft.Authorization/locks', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def log_profile(id)
@@ -121,6 +133,7 @@ module Azure
         url: link(location: 'Microsoft.Insights/logProfiles') + id,
         api_version: backend.get_api_version('Microsoft.Insights/logProfiles', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def log_profiles
@@ -128,6 +141,7 @@ module Azure
         url: link(location: 'Microsoft.Insights/logProfiles'),
         api_version: backend.get_api_version('Microsoft.Insights/logProfiles', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def management_groups
@@ -135,6 +149,7 @@ module Azure
         url: '/providers/Microsoft.Management/managementGroups',
         api_version: backend.get_api_version('Microsoft.Management/managementGroups', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def management_group(group_id, expand: nil, recurse: false, filter: nil)
@@ -149,6 +164,7 @@ module Azure
         api_version: backend.get_api_version('Microsoft.Management/managementGroups', {}),
         params: params,
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def mysql_server(resource_group, name)
@@ -157,6 +173,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def mysql_server_firewall_rules(resource_group, server_name)
@@ -165,6 +182,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def mysql_servers(resource_group)
@@ -173,6 +191,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def mysql_database(resource_group, server_name, database_name)
@@ -181,6 +200,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def mysql_databases(resource_group, server_name)
@@ -189,6 +209,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DBforMySQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_security_group(resource_group, id)
@@ -197,6 +218,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_security_group_rule(resource_group, nsg, rule)
@@ -205,6 +227,7 @@ module Azure
                   resource_group: resource_group) + nsg + '/securityRules/' + rule,
         api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_security_group_rules(resource_group, nsg)
@@ -213,6 +236,7 @@ module Azure
                   resource_group: resource_group) + nsg + '/securityRules',
         api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_security_groups(resource_group)
@@ -221,6 +245,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('microsoft.network/networkSecurityGroups', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_watcher(resource_group, id)
@@ -229,6 +254,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('Microsoft.Network/networkWatchers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_watchers(resource_group)
@@ -237,6 +263,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/networkWatchers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_watcher_flow_log_status(resource_group, network_watcher, nsg)
@@ -246,6 +273,7 @@ module Azure
         api_version: backend.get_api_version('Microsoft.Network/networkWatchers', {}),
         req_body: "{\"targetResourceId\": \"/subscriptions/#{subscription_id}/resourceGroups/#{resource_group}/providers/Microsoft.Network/networkSecurityGroups/#{nsg}\"}",
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def postgresql_server(resource_group, name)
@@ -254,6 +282,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def postgresql_server_configurations(resource_group, name)
@@ -262,6 +291,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def postgresql_servers(resource_group)
@@ -270,6 +300,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def postgresql_database(resource_group, server_name, database_name)
@@ -278,6 +309,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def postgresql_databases(resource_group, server_name)
@@ -286,6 +318,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('microsoft.DBforPostgreSQL/servers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def resource_groups
@@ -293,14 +326,14 @@ module Azure
         url: link(location: 'resourcegroups', provider: false),
         api_version: backend.get_api_version('Microsoft.Resources/resourceGroups', {}),
       )
-    rescue => e; allow_namespace_error e;
-    end
+    rescue => e; allow_namespace_error e;end
 
     def role_definition(name)
       get(
         url: link(location: "Microsoft.Authorization/roleDefinitions/#{name}", provider: true),
         api_version: backend.get_api_version('microsoft.authorization/roleDefinitions',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def role_definitions
@@ -308,6 +341,7 @@ module Azure
         url: link(location: 'Microsoft.Authorization/roleDefinitions', provider: true),
         api_version: backend.get_api_version('microsoft.authorization/roleDefinitions', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def scp_auto_provisioning_settings
@@ -315,6 +349,7 @@ module Azure
         url: link(location: 'Microsoft.Security/autoProvisioningSettings'),
         api_version: backend.get_api_version('Microsoft.Security/autoProvisioningSettings', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def scp_default_policy
@@ -322,6 +357,7 @@ module Azure
         url: link(location: 'Microsoft.Authorization/policyAssignments/SecurityCenterBuiltIn'),
         api_version: backend.get_api_version('Microsoft.Authorization/policyAssignments',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def security_center_policy(id)
@@ -329,6 +365,7 @@ module Azure
         url: link(location: 'Microsoft.Security/policies') + id,
         api_version: backend.get_api_version('Microsoft.Security/policies',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def security_center_policies
@@ -336,6 +373,7 @@ module Azure
         url: link(location: 'Microsoft.Security/policies'),
         api_version: backend.get_api_version('Microsoft.Security/policies',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_servers(resource_group)
@@ -344,6 +382,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_server(resource_group, name)
@@ -352,6 +391,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_server_auditing_settings(resource_group, server_name)
@@ -360,6 +400,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/extendedAuditingSettings',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_server_threat_detection_settings(resource_group, server_name)
@@ -368,6 +409,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/securityAlertPolicies',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_server_administrators(resource_group, server_name)
@@ -376,6 +418,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/managedInstances/administrators',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_encryption_protector(resource_group, server_name)
@@ -384,6 +427,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/encryptionProtector',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_server_firewall_rules(resource_group, server_name)
@@ -392,6 +436,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_database(resource_group, server_name, database_name)
@@ -400,6 +445,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/databases',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_databases(resource_group, server_name)
@@ -408,6 +454,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/databases',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_database_auditing_settings(resource_group, server_name, database_name)
@@ -417,6 +464,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/extendedAuditingSettings', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_database_threat_detection_settings(resource_group, server_name, database_name)
@@ -426,6 +474,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/databases/securityAlertPolicies',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def sql_database_encryption(resource_group, server_name, database_name)
@@ -435,6 +484,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Sql/servers/databases/transparentDataEncryption',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def storage_account(resource_group, name)
@@ -443,6 +493,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Storage/storageAccounts',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def storage_accounts(resource_group)
@@ -451,6 +502,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Storage/storageAccounts',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def subnet(resource_group, vnet, name)
@@ -459,6 +511,7 @@ module Azure
                   resource_group: resource_group) + name,
         api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def subnets(resource_group, vnet)
@@ -467,6 +520,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def subscription
@@ -474,6 +528,7 @@ module Azure
         url: "/subscriptions/#{subscription_id}",
         api_version: backend.get_api_version('microsoft.resources/subscriptions', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
     
     def subscription_locations
@@ -481,6 +536,7 @@ module Azure
         url: link(location: 'locations', provider: false),
         api_version: backend.get_api_version('Microsoft.Resources/subscriptions/locations',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def virtual_machine(resource_group, id)
@@ -489,6 +545,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('Microsoft.Compute/virtualMachines',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def virtual_machines(resource_group)
@@ -497,6 +554,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Compute/virtualMachines',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def virtual_network(resource_group, id)
@@ -505,6 +563,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def virtual_networks(resource_group)
@@ -513,6 +572,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/virtualNetworks',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def virtual_machine_disk(resource_group, id)
@@ -521,6 +581,7 @@ module Azure
                   resource_group: resource_group) + id,
         api_version: backend.get_api_version('Microsoft.Compute/disks',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def virtual_machine_disks
@@ -528,6 +589,7 @@ module Azure
         url: link(location: 'Microsoft.Compute/disks'),
         api_version: backend.get_api_version('Microsoft.Compute/disks', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def webapp(resource_group, webapp_name)
@@ -536,6 +598,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def webapps(resource_group)
@@ -544,6 +607,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def webapp_authentication_settings(resource_group, webapp_name)
@@ -553,6 +617,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def webapp_configuration(resource_group, webapp_name)
@@ -561,6 +626,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Web/sites',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def load_balancer(resource_group, loadbalancer_name)
@@ -569,6 +635,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def load_balancers(resource_group)
@@ -577,6 +644,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_interface(resource_group, name)
@@ -585,6 +653,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_interfaces(resource_group)
@@ -593,6 +662,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def load_balancer(resource_group, loadbalancer_name)
@@ -601,6 +671,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def load_balancers(resource_group)
@@ -609,6 +680,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/loadBalancers', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_interface(resource_group, name)
@@ -617,6 +689,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def network_interfaces(resource_group)
@@ -625,6 +698,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Network/networkInterfaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def webapp_supported_stacks
@@ -632,6 +706,7 @@ module Azure
         url: link(location: 'Microsoft.Web/availableStacks'),
         api_version: backend.get_api_version('Microsoft.Web/availableStacks', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def event_hub_namespace(resource_group, namespace_name)
@@ -640,6 +715,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.EventHub/namespaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def event_hub_event_hub(resource_group, namespace_name, event_hub_name)
@@ -648,6 +724,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.EventHub/namespaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def event_hub_authorization_rule(resource_group, namespace_name, event_hub_name, authorization_rule_name)
@@ -656,6 +733,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.EventHub/namespaces', {}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def iothub(resource_group, resource_name)
@@ -664,6 +742,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def iothub_event_hub_consumer_group(resource_group, resource_name, event_hub_endpoint, consumer_group)
@@ -672,6 +751,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def iothub_event_hub_consumer_groups(resource_group, resource_name, event_hub_endpoint)
@@ -680,6 +760,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def cosmosdb_database_account(resource_group, database_account_name)
@@ -688,6 +769,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DocumentDB/databaseAccounts',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def event_hub_namespace(resource_group, namespace_name)
@@ -696,6 +778,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.EventHub/namespaces',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def event_hub_event_hub(resource_group, namespace_name, event_hub_name)
@@ -704,6 +787,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.EventHub/namespaces',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def event_hub_authorization_rule(resource_group, namespace_name, event_hub_name, authorization_rule_name)
@@ -712,6 +796,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.EventHub/namespaces',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def iothub(resource_group, resource_name)
@@ -720,6 +805,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def iothub_event_hub_consumer_group(resource_group, resource_name, event_hub_endpoint, consumer_group)
@@ -728,6 +814,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def iothub_event_hub_consumer_groups(resource_group, resource_name, event_hub_endpoint)
@@ -736,6 +823,7 @@ module Azure
                 resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.Devices/IotHubs',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     def cosmosdb_database_account(resource_group, database_account_name)
@@ -744,6 +832,7 @@ module Azure
                   resource_group: resource_group),
         api_version: backend.get_api_version('Microsoft.DocumentDB/databaseAccounts',{}),
       )
+    rescue => e; allow_namespace_error e;
     end
 
     private
