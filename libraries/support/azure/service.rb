@@ -26,13 +26,11 @@ module Azure
     def with_backend(backend, override: false)
       set_reader(:backend, backend, override)
     end
-    
-    def allow_namespace_error(e)
-      if e.is_a? ::Train::Transports::ApiNameSpaceError
-        raise Inspec::Exceptions::ResourceSkipped, e.to_s
-      end
 
-      raise e
+    def get_api_version(resource_type, options)
+      backend.get_api_version(resource_type, options)
+    rescue ::Train::Transports::ApiNameSpaceError => e
+      raise Inspec::Exceptions::ResourceFailed, e.to_s
     end
 
     # Converts data (a hash) into a struct. This is a recursive

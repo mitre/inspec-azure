@@ -2,6 +2,7 @@
 
 require 'faraday'
 require 'faraday_middleware'
+require 'inspec/log'
 
 module Azure
   class Rest
@@ -19,29 +20,36 @@ module Azure
 
     def get(path, params: {}, headers: {})
       add_user_agent!(headers)
-      connection.get do |req|
-        puts host
-        puts path
-        puts params.to_s
+      res = connection.get do |req|
         req.url path
 
         req.params  = req.params.merge(params)
         req.headers = req.headers.merge(headers)
         credentials.sign_request(req)
+
+        Inspec::Log.debug "Sending get request: #{req}"
+        req
       end
+
+      Inspec::Log.debug "Got #{res.status} response:\n#{res.body}"
+      res
     end
 
     def post(path, params: {}, headers: {}, body: nil)
       add_user_agent!(headers)
-      connection.post do |req|
-        puts host
-        puts path
+      res = connection.post do |req|
         req.url path
         req.body    = body if body
         req.params  = req.params.merge(params)
         req.headers = req.headers.merge(headers)
         credentials.sign_request(req)
+
+        Inspec::Log.debug "Sending post request: #{req}"
+        req
       end
+
+      Inspec::Log.debug "Got #{res.status} response:\n#{res.body}"
+      res
     end
 
     private
@@ -59,6 +67,9 @@ module Azure
         conn.response :json, content_type: /\bjson$/
         conn.adapter  Faraday.default_adapter
       end
+
+      Inspec::Log.debug "Creating faraday connection object for host `#{host}`"
+      @connection
     end
 
     def authorization_header
