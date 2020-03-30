@@ -54,6 +54,14 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
     @default_security_rules ||= @properties['defaultSecurityRules']
   end
 
+  def deny_by_default?
+    inbound = security_rules_inbound.sort_by { |rule| rule[:properties][:priority]}.last
+    outbound = security_rules_outbound.sort_by { |rule| rule[:properties][:priority]}.last
+
+    rule_matches_config?(inbound, deny_by_default_config("inbound")) && \
+    rule_matches_config?(outbound, deny_by_default_config("outbound"))
+  end
+
   def match_security_config?(config, direction: nil)
     if config.nil?
       return false
@@ -138,6 +146,20 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
   RSpec::Matchers.alias_matcher :allow_rdp_from_internet, :be_allow_rdp_from_internet
 
   private
+
+  DENY_CONFIG = {
+    :sourcePorts        => ["*"],
+    :destinationPorts   => ["*"],
+    :sourceAddress      => ["*"],
+    :destinationAddress => ["*"],
+    :protocol           => "*",
+    :access             => "deny"
+  }
+  def deny_by_default_config(direction)
+    c = DENY_CONFIG.clone
+    c[:direction] = direction
+    c
+  end
 
   def security_rules_properties
     security_rules.collect { |rule| rule['properties'] }
