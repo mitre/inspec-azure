@@ -436,6 +436,14 @@ module Azure
       )
     end
 
+    def storage_account_keys(resource_group, name)
+      post(
+        url: link(location: "Microsoft.Storage/storageAccounts/#{name}/listKeys",
+                  resource_group: resource_group),
+        api_version: get_api_version('Microsoft.Storage/storageAccounts',{}),
+      )
+    end
+
     def storage_account(resource_group, name)
       get(
         url: link(location: "Microsoft.Storage/storageAccounts/#{name}",

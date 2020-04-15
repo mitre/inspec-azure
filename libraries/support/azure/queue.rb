@@ -8,10 +8,16 @@ module Azure
   class Queue
     include Service
 
-    def initialize(queue_name, backend)
+    def initialize(resource_group_name, storage_account_name, backend)
+      @resource_group_name = resource_group_name
+      @storage_account_name = storage_account_name
+      @backend = backend
       @required_attrs = []
       @page_link_name = 'nextMarker'
-      @rest_client    = Azure::Rest.new(client(queue_name, backend))
+    end
+
+    def key
+      Azure::Management.instance.with_backend(@backend).storage_account_keys(@resource_group_name, @storage_account_name)&.[](0)&.[](0).value
     end
 
     def queues
@@ -37,34 +43,6 @@ module Azure
     end
 
     private
-
-    attr_reader :rest_client
-
-    def client(queue, backend)
-      OpenStruct.new(
-        {
-          base_url: "https://#{queue}.queue.core.windows.net",
-          credentials: auth_token(backend),
-        },
-      )
-    end
-
-    def auth_token(backend)
-      begin
-        credentials = backend.instance_variable_get('@credentials')
-        tenant = credentials[:tenant_id]
-        client = credentials[:client_id]
-        secret = credentials[:client_secret]
-      rescue StandardError => e
-        raise "Unable to load Azure Configuration from backend.\n #{e}"
-      end
-
-      settings = MsRestAzure::ActiveDirectoryServiceSettings.get_azure_settings
-      settings.authentication_endpoint = 'https://login.microsoftonline.com/'
-      settings.token_audience = 'https://storage.azure.com/'
-
-      ::MsRest::TokenCredentials.new(::MsRestAzure::ApplicationTokenProvider.new(tenant, client, secret, settings))
-    end
 
     def from_xml
       result = {}

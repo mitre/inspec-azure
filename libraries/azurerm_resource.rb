@@ -20,8 +20,8 @@ class AzurermResource < Inspec.resource(1)
     Azure::Vault.new(vault_name, inspec.backend)
   end
 
-  def queue(queue_name)
-    Azure::Queue.new(queue_name, inspec.backend)
+  def queue(resource_group_name, storage_account_name)
+    Azure::Queue.new(resource_group_name, storage_account_name, inspec.backend)
   end
 
   private
