@@ -14,26 +14,32 @@ class AzurermStorageAccountBlobContainer < AzurermSingularResource
     end
   EXAMPLE
 
-  ATTRS = %i(
-    id
-    name
-    etag
-    properties
-    type
-  ).freeze
+  ATTRS = {
+    :last_modified => :LastModified,
+    :etag => :Etag,
+    :lease_status => :LeaseStatus,
+    :lease_state => :LeaseState,
+    :public_access => :PublicAccess,
+    :has_immutability_policy => :HasImmutabilityPolicy,
+    :has_legal_hold => :HasLegalHold,
+    :name => :Name
+  }.freeze
 
-  attr_reader(*ATTRS)
+  attr_reader(*(ATTRS.keys))
 
   def initialize(resource_group: nil, storage_account_name: nil, blob_container_name: nil)
-    resp = management.blob_container(resource_group, storage_account_name, blob_container_name)
-    return if has_error?(resp)
+    @resp = blob_service(resource_group, storage_account_name).container(blob_container_name)
+    return if has_error?(@resp)
 
-    assign_fields(ATTRS, resp)
+    assign_fields_with_map(ATTRS, @resp)
+
+    @name = blob_container_name
 
     @exists = true
   end
 
   def to_s
-    "#{name} Storage Account"
+    "#{name} Storage Account Blob Container"
   end
+
 end

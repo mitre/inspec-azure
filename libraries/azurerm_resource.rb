@@ -20,8 +20,16 @@ class AzurermResource < Inspec.resource(1)
     Azure::Vault.new(vault_name, inspec.backend)
   end
 
-  def queue(resource_group_name, storage_account_name)
-    Azure::Queue.new(resource_group_name, storage_account_name, inspec.backend)
+  def queue_service(resource_group_name, storage_account_name)
+    Azure::QueueService.new(resource_group_name, storage_account_name, inspec.backend)
+  end
+
+  def storage_service(resource_group_name, storage_account_name, storage_type)
+    Azure::StorageService.new(resource_group_name, storage_account_name, storage_type, inspec.backend)
+  end
+
+  def blob_service(resource_group_name, storage_account_name)
+    Azure::BlobService.new(resource_group_name, storage_account_name, inspec.backend)
   end
 
   private
