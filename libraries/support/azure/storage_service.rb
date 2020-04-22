@@ -15,6 +15,7 @@ module Azure
       @resource_group_name = resource_group_name
       @storage_account_name = storage_account_name
       @backend = backend
+      @storage_type = storage_type
 
       @storage_suffix = ".#{storage_type}#{@backend.active_cloud.storage_endpoint_suffix}"
     end
@@ -61,7 +62,7 @@ module Azure
       canonicalized_headers
     end
     
-    def getCanonicalizedResource(uri, params, storage_account_name)
+    def getBlobQueueCanonicalizedResource(uri, params, storage_account_name)
       # get just the path from the full uri
       canonicalized_path = URI(uri).path
     
@@ -79,29 +80,67 @@ module Azure
       canonicalized_resource += canonicalized_path
       canonicalized_resource += canonicalized_params
     end
+
+    def getTableCanonicalizedResource(uri, params, storage_account_name)
+      # get just the path from the full uri
+      canonicalized_path = URI(uri).path
     
-    AUTH_HEADER_TEMPLATE = "%<method>s\n%<content_encoding>s\n%<content_language>s\n%<content_length>s\n%<content_md5>s\n%<content_type>s\n%<date>s\n%<if_modified_since>s\n%<if_match>s\n%<if_none_match>s\n%<if_unmodified_since>s\n%<range>s\n%<canonicalized_headers>s%<canonicalized_resource>s"
+      # make sure sure the canonicalized_path will start with a '/'
+      canonicalized_path = "/" + canonicalized_path if !canonicalized_path.start_with?("/")
+    
+      canonicalized_params = []
+      params.select { |key, value| key == "comp" }.sort.each do |key,value|
+        canonicalized_params.append "#{key}=#{value}"
+      end
+    
+      # create canonicalized resource string
+      canonicalized_resource = "/"
+      canonicalized_resource += storage_account_name
+      canonicalized_resource += canonicalized_path
+      canonicalized_resource += "?#{canonicalized_params.join("&")}" if !canonicalized_params.empty?
+      canonicalized_resource
+    end
+    
+    QUEUE_BLOB_AUTH_HEADER_TEMPLATE = "%<method>s\n%<content_encoding>s\n%<content_language>s\n%<content_length>s\n%<content_md5>s\n%<content_type>s\n%<date>s\n%<if_modified_since>s\n%<if_match>s\n%<if_none_match>s\n%<if_unmodified_since>s\n%<range>s\n%<canonicalized_headers>s%<canonicalized_resource>s"
+    TABLE_AUTH_HEADER_TEMPLATE = "%<method>s\n%<content_md5>s\n%<content_type>s\n%<date>s\n%<canonicalized_resource>s"
     def getAuthenticationHeader(method, path, params, headers, storage_suffix, storage_account_name, storage_account_key)
       # compute full path without query parameters
       uri = "https://#{storage_account_name}#{storage_suffix}#{path}"
     
+      Inspec::Log.debug "Generating Auth Header for service: #{@storage_type}"
+
+      # determine correct template
+      if @storage_type.downcase == "blob" || @storage_type.downcase == "queue"
+        template = QUEUE_BLOB_AUTH_HEADER_TEMPLATE
+        date = ""
+        canonicalized_resource = getBlobQueueCanonicalizedResource(uri, params, storage_account_name)
+      elsif @storage_type.downcase == "table"
+        template = TABLE_AUTH_HEADER_TEMPLATE
+        date = headers["x-ms-date"]
+        canonicalized_resource = getTableCanonicalizedResource(uri, params, storage_account_name)
+      else
+        raise Inspec::Exceptions::ResourceFailed, "Cannot generate storage service authentication header for unknown storage serve `#{@storage_type}. Allowed storage services are queue, table, blob."
+      end
+
       # create string to sign
-      auth_header_value = AUTH_HEADER_TEMPLATE % {
+      auth_header_value = template % {
         method: method,
         content_encoding: "",
         content_language: "",
         content_length: "",
         content_md5: "",
         content_type: headers["Content-Type"] || "",
-        date: "",
+        date: date,
         if_modified_since: "",
         if_match: "",
         if_none_match: "",
         if_unmodified_since: "",
         range: "",
         canonicalized_headers: getCanonicalizedHeaders(headers),
-        canonicalized_resource: getCanonicalizedResource(uri, params, storage_account_name)
+        canonicalized_resource: canonicalized_resource
       }
+
+      Inspec::Log.debug "Header to sign: #{auth_header_value}"
     
       # decode key
       decoded_key = Base64.decode64(storage_account_key)

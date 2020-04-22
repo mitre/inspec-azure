@@ -32,6 +32,10 @@ class AzurermResource < Inspec.resource(1)
     Azure::BlobService.new(resource_group_name, storage_account_name, inspec.backend)
   end
 
+  def table_service(resource_group_name, storage_account_name)
+    Azure::TableService.new(resource_group_name, storage_account_name, inspec.backend)
+  end
+
   private
 
   def has_error?(struct)
