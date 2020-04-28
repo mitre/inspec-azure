@@ -12,29 +12,30 @@ class StorageAccountBlobContainers < AzurermPluralResource
   EXAMPLE
 
   FilterTable.create
-             .register_column(:names, field: 'Name')
-             .register_column(:last_modified, field: 'Last_Modified')
-             .register_column(:etags, field: 'Etag')
-             .register_column(:lease_statuses, field: 'LeaseStatus')
-             .register_column(:lease_states, field: 'LeaseState')
-             .register_column(:public_accesses, field: 'PublicAccess')
-             .register_column(:legal_holds, field: 'HasLegalHold')
+             .register_column(:names, field: 'name')
+             .register_column(:last_modified, field: 'last_modified')
+             .register_column(:etags, field: 'etag')
+             .register_column(:lease_statuses, field: 'lease_status')
+             .register_column(:lease_states, field: 'lease_state')
+             .register_column(:public_accesses, field: 'public_access')
+             .register_column(:immutability_policies, field: 'has_immutability_policy')
+             .register_column(:legal_holds, field: 'has_legal_hold')
              .install_filter_methods_on_resource(self, :table)
 
-  attr_reader :table
+  attr_reader :table, :resp
 
   def initialize(resource_group: nil, storage_account_name: nil)
-    resp = blob_service(resource_group, storage_account_name).containers
+    @resp = blob_service(resource_group, storage_account_name).containers
     return if has_error?(resp)
 
-    @table = expand("Properties", resp)
+    @table = expand("properties", resp)
   end
 
   def to_s
     'Storage Account Blob Containers'
   end
 
-  REQUIRED_FIELDS = [:PublicAccess]
+  REQUIRED_FIELDS = [:public_access]
   def nil_required(mems, vals)
     REQUIRED_FIELDS.each do |required_field|
       if !mems.include?(required_field)

@@ -114,6 +114,8 @@ class AzurermNetworkSecurityGroup < AzurermSingularResource
   end
 
   def rule_matches_config?(rule, c)
+    return false if rule.nil?
+    
     props_hash = rule.properties.to_h
 
     sourcePorts = more_compact([props_hash[:sourcePortRange]] + props_hash[:sourcePortRanges])

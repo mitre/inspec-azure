@@ -21,7 +21,13 @@ module Azure
     end
 
     def key
-      @key ||= Azure::Management.instance.with_backend(@backend).storage_account_keys(@resource_group_name, @storage_account_name)&.[](0)&.[](0).value
+      @key ||= begin 
+        keys = Azure::Management.instance.with_backend(@backend).storage_account_keys(@resource_group_name, @storage_account_name)
+        if keys.nil? || (keys.is_a?(Struct) && keys.key?(:error))
+          raise Inspec::Exceptions::ResourceFailed, "Failed to fetch storage accounts keys for signature. #{keys.to_h}"
+        end
+        keys&.[](0)&.[](0).value
+      end
     end
 
     # private
