@@ -3,18 +3,28 @@
 require 'ostruct'
 require 'json'
 require 'active_support/core_ext/hash'
+require 'support/azure/service'
+require 'inspec/exceptions'
+require 'inspec/log'
 
 module Azure
   class StorageService
+    class StorageTypeError < Inspec::Exceptions::ResourceFailed; end;
+
     include Service
 
     attr_reader :backend
+
+    SUPPORTED_STORAGE_TYPES = ['blob', 'table', 'queue']
     
     def initialize(resource_group_name, storage_account_name, storage_type, backend)
+      raise StorageTypeError, "Unsupported storage type '#{storage_type}. Supported types #{SUPPORTED_STORAGE_TYPES.join(' ')}" if !SUPPORTED_STORAGE_TYPES.include?(storage_type)
+
       @api_version = ENV["AZURE_CLOUD_STORAGE_API_VERSION"] || "2017-11-09"
       @resource_group_name = resource_group_name
       @storage_account_name = storage_account_name
       @backend = backend
+      
       @storage_type = storage_type
 
       @storage_suffix = ".#{storage_type}#{@backend.active_cloud.storage_endpoint_suffix}"
@@ -125,7 +135,7 @@ module Azure
         date = headers["x-ms-date"]
         canonicalized_resource = getTableCanonicalizedResource(uri, params, storage_account_name)
       else
-        raise Inspec::Exceptions::ResourceFailed, "Cannot generate storage service authentication header for unknown storage serve `#{@storage_type}. Allowed storage services are queue, table, blob."
+        raise StorageTypeError, "Cannot generate storage service authentication header for unknown storage service `#{@storage_type}. Allowed storage services are queue, table, blob."
       end
 
       # create string to sign
@@ -217,10 +227,6 @@ module Azure
       body
     end
 
-    def parse_response
-      
-    end
-
     def from_xml
       result = {}
       lambda do |body, _api_version, res|
@@ -239,12 +245,5 @@ module Azure
       end
     end
 
-    def catch_404
-      yield # yield
-    rescue ::Faraday::ConnectionFailed
-      # No such Queue.
-      # Not all Storage Accounts have a Queue.
-      nil
-    end
   end
 end
