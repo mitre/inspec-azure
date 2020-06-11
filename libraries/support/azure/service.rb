@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require 'inspec/exceptions'
 require 'support/azure/response'
 
 module Azure
   module Service
+    class UnsupportedApiCall < Inspec::Exceptions::ResourceSkipped; end;
+
     class Cache
       def initialize
         @store = {}
@@ -30,7 +33,7 @@ module Azure
     def get_api_version(resource_type, options)
       backend.get_api_version(resource_type, options)
     rescue ::Train::Transports::ApiNameSpaceError => e
-      raise Inspec::Exceptions::ResourceFailed, e.to_s
+      raise UnsupportedApiCall, e.to_s
     end
 
     # Converts data (a hash) into a struct. This is a recursive

@@ -10,6 +10,8 @@ require 'inspec/log'
 module Azure
   class StorageService
     class StorageTypeError < Inspec::Exceptions::ResourceFailed; end;
+    class RequestError < Inspec::Exceptions::ResourceFailed; end;
+    class KeyFetchError < Inspec::Exceptions::ResourceFailed; end;
 
     include Service
 
@@ -34,7 +36,7 @@ module Azure
       @key ||= begin 
         keys = Azure::Management.instance.with_backend(@backend).storage_account_keys(@resource_group_name, @storage_account_name)
         if keys.nil? || (keys.is_a?(Struct) && keys.key?(:error))
-          raise Inspec::Exceptions::ResourceFailed, "Failed to fetch storage accounts keys for signature. #{keys.to_h}"
+          raise KeyFetchError, "Failed to fetch storage accounts keys for signature. #{keys.to_h}"
         end
         keys&.[](0)&.[](0).value
       end
@@ -202,7 +204,7 @@ module Azure
       elsif method.downcase == "post"
         connection_method = connection.method(:post)
       else
-        raise Inspec::Exceptions::ResourceFailed, "Cannot make request to stroage account using unsupported method `#{method}`. Supported methods are GET and POST"
+        raise Req, "Cannot make request to stroage account using unsupported method `#{method}`. Supported methods are GET and POST"
       end
 
       Inspec::Log.debug "Sending #{method} request to #{url} with parameters #{params}"
@@ -221,7 +223,7 @@ module Azure
       body = to_struct(unwrap.call(res.body, api_version, res))
 
       if !expected.nil? && res.status != expected
-        raise Inspec::Exceptions::ResourceFailed, "Failed to execute request. Expected status #{expected} but got #{res.status}.\n#{body}"
+        raise RequestError, "Failed to execute request. Expected status #{expected} but got #{res.status}.\n#{body}"
       end
 
       body
